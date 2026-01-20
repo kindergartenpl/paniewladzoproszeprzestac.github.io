@@ -16,6 +16,8 @@ if (date.getHours() >= 18){
 document.querySelector(".welcome").innerHTML = welcome;
 
 function toHome(){
+    // Usuń parametr 'image' jeśli istnieje, aby uniknąć problemu z long URL
+    params.delete('image');
     location.href = 'home.html?' + params.toString();
 }
 
