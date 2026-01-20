@@ -1,9 +1,7 @@
 var params = new URLSearchParams(window.location.search);
 // Odzyskaj obraz z localStorage jeśli istnieje
 const savedImage = localStorage.getItem('userImage');
-if (savedImage) {
-    params.set('image', savedImage);
-}
+// (obraz jest już przechowywany w localStorage, nie potrzebuje go w URL)
 
 document.querySelector(".login").addEventListener('click', () => {
     toHome();

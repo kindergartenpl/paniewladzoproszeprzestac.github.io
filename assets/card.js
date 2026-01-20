@@ -73,7 +73,8 @@ for (var key of params.keys()){
   data[key] = params.get(key);
 }
 
-document.querySelector(".id_own_image").style.backgroundImage = `url(${data['image']})`;
+const savedImage = localStorage.getItem('userImage');
+document.querySelector(".id_own_image").style.backgroundImage = `url(${savedImage || data['image']})`;
 
 var birthday = data['birthday'];
 var birthdaySplit = birthday.split(".");
