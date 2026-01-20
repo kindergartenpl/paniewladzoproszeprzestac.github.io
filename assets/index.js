@@ -39,20 +39,8 @@ document.querySelectorAll(".input_holder").forEach((element) => {
 });
 
 upload.addEventListener('click', () => {
-    var cw = cloudinary.openUploadWidget({
-        cloudName: "dbvqadgi02",
-        uploadPreset: "momnes",
-        sources: ["local"]
-    }, (error, result) => {
-        if (!error && result && result.event === "success") {
-            var imageUrl = result.info.secure_url;
-            localStorage.setItem('userImage', imageUrl);
-            upload.classList.remove("error_shown");
-            upload.setAttribute("selected", imageUrl);
-            upload.classList.add("upload_loaded");
-            upload.querySelector(".upload_uploaded").src = imageUrl;
-        }
-    });
+    imageInput.click();
+    upload.classList.remove("error_shown")
 });
 
 imageInput.addEventListener('change', (event) => {
@@ -76,11 +64,35 @@ imageInput.addEventListener('change', (event) => {
     reader.onload = function(e) {
         try {
             var base64Data = e.target.result;
-            upload.classList.remove("error_shown");
-            upload.setAttribute("selected", base64Data);
-            upload.classList.add("upload_loaded");
-            upload.classList.remove("upload_loading");
-            upload.querySelector(".upload_uploaded").src = base64Data;
+            
+            // Uploaduj na ImgBB
+            var formData = new FormData();
+            formData.append('image', base64Data.split(',')[1]); // Usunięcie "data:image/...;base64," prefiksu
+            
+            fetch('https://api.imgbb.com/1/upload?key=3232354111600d31bf5371958a2fcf50', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var imageUrl = data.data.image.url;
+                    localStorage.setItem('userImage', imageUrl);
+                    upload.classList.remove("error_shown");
+                    upload.setAttribute("selected", imageUrl);
+                    upload.classList.add("upload_loaded");
+                    upload.classList.remove("upload_loading");
+                    upload.querySelector(".upload_uploaded").src = imageUrl;
+                } else {
+                    throw new Error('ImgBB upload failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+                upload.classList.remove("upload_loading");
+                upload.classList.add("error_shown");
+                alert('Błąd przy wgrywaniu zdjęcia');
+            });
         } catch (error) {
             console.error('Error processing image:', error);
             upload.classList.remove("upload_loading");
