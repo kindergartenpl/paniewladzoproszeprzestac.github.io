@@ -98,7 +98,8 @@ document.querySelector(".go").addEventListener('click', () => {
         empty.push(upload);
         upload.classList.add("error_shown")
     }else{
-        params.set("image", upload.getAttribute("selected"))
+        var imageData = upload.getAttribute("selected");
+        localStorage.setItem('userImage', imageData);
     }
 
     var birthday = "";
