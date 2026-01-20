@@ -39,8 +39,20 @@ document.querySelectorAll(".input_holder").forEach((element) => {
 });
 
 upload.addEventListener('click', () => {
-    imageInput.click();
-    upload.classList.remove("error_shown")
+    var cw = cloudinary.openUploadWidget({
+        cloudName: "dbvqadgi02",
+        uploadPreset: "momnes",
+        sources: ["local"]
+    }, (error, result) => {
+        if (!error && result && result.event === "success") {
+            var imageUrl = result.info.secure_url;
+            localStorage.setItem('userImage', imageUrl);
+            upload.classList.remove("error_shown");
+            upload.setAttribute("selected", imageUrl);
+            upload.classList.add("upload_loaded");
+            upload.querySelector(".upload_uploaded").src = imageUrl;
+        }
+    });
 });
 
 imageInput.addEventListener('change', (event) => {

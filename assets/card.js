@@ -74,7 +74,7 @@ for (var key of params.keys()){
 }
 
 const savedImage = localStorage.getItem('userImage');
-document.querySelector(".id_own_image").style.backgroundImage = `url(${savedImage || data['image']})`;
+document.querySelector(".id_own_image").style.backgroundImage = `url(${savedImage || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='})`;
 
 var birthday = data['birthday'];
 var birthdaySplit = birthday.split(".");

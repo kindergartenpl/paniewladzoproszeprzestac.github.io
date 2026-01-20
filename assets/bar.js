@@ -2,7 +2,10 @@
 var params = new URLSearchParams(window.location.search);
 
 function sendTo(url){
-    location.href = `${url}.html?` + params.toString();
+    // Usuń parametr 'image' aby uniknąć problemów z długim URL
+    var cleanParams = new URLSearchParams(params);
+    cleanParams.delete('image');
+    location.href = `${url}.html?` + cleanParams.toString();
 }
 
 document.querySelectorAll(".bottom_element_grid").forEach((element) => {
